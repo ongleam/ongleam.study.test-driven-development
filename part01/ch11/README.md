@@ -2,59 +2,123 @@
 
 ## 목표
 
-- Dollar와 Franc 서브클래스 제거
+- Dollar와 Franc 서브클래스 완전 제거
 - Money 클래스만으로 모든 기능 구현
-- 통화 기반으로 구분
+- "The root of all evil" = 불필요한 중복/복잡성
 
 ## 이전 챕터와의 차이
 
-- `Dollar`와 `Franc` 클래스 완전 제거
-- `__eq__`에서 `type()` 대신 `_currency` 비교
-- `times()`에서 조건문 제거, Money 직접 반환
-- 팩토리 함수가 Money 객체 직접 생성
+| 항목        | Chapter 10             | Chapter 11 |
+| ----------- | ---------------------- | ---------- |
+| 클래스 구조 | Money + Dollar + Franc | Money만    |
+| 서브클래스  | 빈 껍데기로 존재       | 완전 제거  |
+| 코드 복잡도 | 3개 클래스             | 1개 클래스 |
 
 ## Red-Green-Refactor 사이클
 
 ### 1. Red: 기존 테스트 유지
 
-- 모든 테스트가 여전히 통과해야 함
-
-### 2. Green: 구현
+서브클래스 제거 후에도 모든 테스트가 통과해야 함:
 
 ```python
+def test_multiplication(self):
+    five = Money.dollar(5)
+    assert Money.dollar(10) == five.times(2)
+```
+
+### 2. Green: 서브클래스 제거
+
+Dollar와 Franc 클래스를 완전히 삭제:
+
+```python
+# 제거됨:
+# class Dollar(Money): ...
+# class Franc(Money): ...
+
+# Money만 남음
 class Money:
-    def times(self, multiplier):
-        return Money(self._amount * multiplier, self._currency)
+    def __init__(self, amount, currency):
+        self._amount = amount
+        self._currency = currency
 
-    def __eq__(self, other):
-        return (self._amount == other._amount and
-                self._currency == other._currency)
+    @staticmethod
+    def dollar(amount):
+        return Money(amount, "USD")
 
-def dollar(amount):
-    return Money(amount, "USD")
+    @staticmethod
+    def franc(amount):
+        return Money(amount, "CHF")
 ```
 
 ### 3. Refactor
 
-- 서브클래스 완전 제거
-- 통화 기반 동등성 비교
-- 간결한 코드
+- 불필요한 상속 계층 제거
+- 코드 단순화 완료
+
+## 전체 코드
+
+```python
+class Money:
+    def __init__(self, amount, currency):
+        self._amount = amount
+        self._currency = currency
+
+    def currency(self):
+        return self._currency
+
+    def times(self, multiplier):
+        return Money(self._amount * multiplier, self._currency)
+
+    def __eq__(self, other):
+        return self._amount == other._amount and self._currency == other._currency
+
+    def __hash__(self):
+        return hash((self._amount, self._currency))
+
+    @staticmethod
+    def dollar(amount):
+        return Money(amount, "USD")
+
+    @staticmethod
+    def franc(amount):
+        return Money(amount, "CHF")
+```
 
 ## 구현된 기능
 
-- ✅ Money 클래스만 존재
-- ✅ 통화 기반 비교
-- ✅ 조건문 없는 times()
-- ✅ 팩토리 함수로 간단한 생성
+- ✅ Dollar, Franc 서브클래스 완전 제거
+- ✅ Money 클래스만으로 모든 기능 구현
+- ✅ 팩토리 메서드로 통화별 생성
+- ✅ currency 기반 동등성 비교
 
 ## 학습 포인트
 
-1. **중복의 악**: 불필요한 서브클래스 제거
-2. **데이터 주도**: 타입이 아닌 데이터(통화)로 구분
-3. **단순화**: 복잡한 상속 계층 제거
-4. **리팩토링의 힘**: 테스트 덕분에 안전한 대규모 변경
+1. **"The Root of All Evil"**: 불필요한 중복과 복잡성이 악의 근원
+2. **데이터 주도 설계**: 타입 계층 대신 데이터(currency)로 구분
+3. **단순화의 힘**: 3개 클래스 → 1개 클래스
+4. **안전한 리팩토링**: 테스트 덕분에 대담한 삭제 가능
+
+## Kent Beck 인용
+
+> "The root of all evil" (Donald Knuth의 "premature optimization is the root of all evil"에서 영감)
+
+불필요한 서브클래스는 복잡성을 추가할 뿐입니다. 테스트가 있으면 과감하게 제거할 수 있습니다.
+
+## 코드 진화 요약 (ch01 → ch11)
+
+```
+ch01-04: Dollar 클래스만
+ch05:    Dollar + Franc (별도 클래스)
+ch06:    Money 상위 클래스 도입
+ch07:    type() 비교 추가
+ch08:    Money 추상 클래스 + 팩토리 메서드
+ch09:    currency 개념 추가
+ch10:    times() Money로 통합, currency 비교
+ch11:    Dollar/Franc 서브클래스 제거 → Money만!
+```
 
 ## 문제점 (다음 챕터에서 해결)
 
-- 아직 덧셈 기능 없음
-- 다중 통화 계산 필요
+- ⚠️ 아직 덧셈 기능 없음 (`$5 + $5 = $10`)
+- ⚠️ 다중 통화 계산 필요 (`$5 + 10 CHF`)
+- ⚠️ Expression 인터페이스 도입 예정
