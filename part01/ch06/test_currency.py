@@ -10,7 +10,7 @@ class TestDollar:
 
 class TestFranc:
     # Chapter 5: Franc 곱셈 테스트
-    def test_franc_multiplication(self):
+    def test_multiplication(self):
         five = Franc(5)
         assert Franc(10) == five.times(2)
         assert Franc(15) == five.times(3)
