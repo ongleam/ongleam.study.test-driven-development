@@ -2,7 +2,7 @@ from part01.ch07.currency import Dollar, Franc
 
 
 class TestMoney:
-    def test_multiplication(self):
+    def test_dollar_multiplication(self):
         five = Dollar(5)
         assert Dollar(10) == five.times(2)
         assert Dollar(15) == five.times(3)
