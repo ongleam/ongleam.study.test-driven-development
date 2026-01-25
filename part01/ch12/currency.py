@@ -1,11 +1,18 @@
 # Chapter 12: Addition, Finally
-# Expression 인터페이스와 Sum 클래스 도입
+# "Fake It" 패턴 - stub으로 시작하여 테스트 통과
+#
+# TDD 진행 과정:
+# 1. test_simple_addition 작성
+# 2. Fake It: Bank.reduce()가 하드코딩된 값 반환
+# 3. 점진적으로 실제 구현으로 발전
+#
+# 이 챕터의 목표: $5 + $5 = $10 동작하게 만들기
 
 
 # Expression 인터페이스 (마커 클래스)
 class Expression:
     """Expression은 금액 계산을 나타내는 인터페이스.
-    단순한 Money일 수도 있고, Sum 같은 복합 표현식일 수도 있음.
+    아직 reduce() 메서드 없음 - Chapter 13에서 추가 예정.
     """
 
     pass
@@ -24,7 +31,9 @@ class Money(Expression):
         return Money(self._amount * multiplier, self._currency)
 
     def plus(self, addend):
-        """덧셈 - Sum 반환 (지연 평가)"""
+        """덧셈 - Sum 반환 (지연 평가)
+        아직 계산하지 않고 Sum 객체만 생성.
+        """
         return Sum(self, addend)
 
     def __eq__(self, other):
@@ -48,20 +57,29 @@ class Money(Expression):
         return Money(amount, "CHF")
 
 
-# Sum 클래스 - 두 Expression의 합 (Composite 패턴)
+# Sum 클래스 - 두 Expression의 합
+# 아직 reduce() 메서드 없음 - Chapter 13에서 추가 예정
 class Sum(Expression):
     def __init__(self, augend, addend):
         self.augend = augend  # 피가산수
         self.addend = addend  # 가산수
 
 
-# Bank 클래스 - Expression을 Money로 변환 (reduce)
+# Bank 클래스 - "Fake It" stub 구현
+# 다형성 없이 isinstance()로 타입 체크 (Chapter 13에서 개선 예정)
 class Bank:
     def reduce(self, source, to_currency):
-        """Expression을 단일 통화 Money로 변환"""
+        """Stub 구현: isinstance()로 타입 체크
+
+        이 구현의 문제점:
+        - Bank가 모든 Expression 타입을 알아야 함
+        - 새 Expression 타입 추가 시 Bank 수정 필요
+        - Chapter 13에서 다형성으로 개선
+        """
         if isinstance(source, Money):
             return source
         if isinstance(source, Sum):
+            # Fake: 같은 통화라고 가정하고 단순 합산
             amount = source.augend._amount + source.addend._amount
             return Money(amount, to_currency)
         return source
