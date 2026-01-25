@@ -1,4 +1,4 @@
-from part01.ch15_mixed_currencies.currency import dollar, franc, Bank
+from part01.ch15.currency import dollar, franc, Bank
 
 
 class TestMoney:

@@ -1,4 +1,4 @@
-from part01.ch09_times_were_livin_in.currency import dollar, franc
+from part01.ch09.currency import dollar, franc
 
 
 class TestMoney:

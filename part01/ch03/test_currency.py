@@ -1,4 +1,4 @@
-from part01.ch03_equality.currency import Dollar
+from part01.ch03.currency import Dollar
 
 
 class TestDollar:

@@ -1,4 +1,4 @@
-from part01.ch11_root_of_all_evil.currency import dollar, franc
+from part01.ch11.currency import dollar, franc
 
 
 class TestMoney:

@@ -1,4 +1,4 @@
-from part01.ch13_make_it.currency import dollar, franc, Bank, Sum, Money
+from part01.ch13.currency import dollar, franc, Bank, Sum, Money
 
 
 class TestMoney:

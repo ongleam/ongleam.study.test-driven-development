@@ -1,4 +1,4 @@
-from part01.ch07_apples_and_oranges.currency import Dollar, Franc
+from part01.ch07.currency import Dollar, Franc
 
 
 class TestDollar:

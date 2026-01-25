@@ -1,4 +1,4 @@
-from part01.ch05_franc_ly_speaking.currency import Dollar, Franc
+from part01.ch05.currency import Dollar, Franc
 
 
 class TestDollar:

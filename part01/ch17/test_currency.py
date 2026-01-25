@@ -1,4 +1,4 @@
-from part01.ch17_retrospective.currency import dollar, franc, Bank
+from part01.ch17.currency import dollar, franc, Bank
 
 
 class TestMoney:

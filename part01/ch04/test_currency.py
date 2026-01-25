@@ -1,4 +1,4 @@
-from part01.ch04_privacy.currency import Dollar
+from part01.ch04.currency import Dollar
 
 
 class TestDollar:

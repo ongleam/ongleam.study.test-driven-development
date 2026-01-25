@@ -1,4 +1,4 @@
-from part01.ch06_equality_for_all.currency import Dollar, Franc
+from part01.ch06.currency import Dollar, Franc
 
 
 class TestDollar:

@@ -1,4 +1,4 @@
-from part01.ch10_interesting_times.currency import dollar, franc
+from part01.ch10.currency import dollar, franc
 
 
 class TestMoney:
