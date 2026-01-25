@@ -3,19 +3,13 @@ class Dollar:
     def __init__(self, amount):
         self.amount = amount
 
-    @property
-    def amount(self):
-        return self.amount
-
     def times(self, multiplier):
         return Dollar(self.amount * multiplier)
 
     def __eq__(self, other):
-        # 동등성 비교 구현
         if not isinstance(other, Dollar):
             return False
         return self.amount == other.amount
 
     def __hash__(self):
-        # __eq__를 구현하면 __hash__도 구현해야 함
         return hash(self.amount)

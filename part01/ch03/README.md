@@ -29,38 +29,33 @@ def test_equality(self):
 def __eq__(self, other):
     if not isinstance(other, Dollar):
         return False
-    return self._amount == other._amount
+    return self.amount == other.amount
 
 def __hash__(self):
-    return hash(self._amount)
+    return hash(self.amount)
 ```
 
 ### 3. Refactor
 
 - `isinstance()`로 타입 체크 추가
-- `_amount`를 private 변수로 변경
 
 ## 전체 코드
 
 ```python
 class Dollar:
     def __init__(self, amount):
-        self._amount = amount
-
-    @property
-    def amount(self):
-        return self._amount
+        self.amount = amount
 
     def times(self, multiplier):
-        return Dollar(self._amount * multiplier)
+        return Dollar(self.amount * multiplier)
 
     def __eq__(self, other):
         if not isinstance(other, Dollar):
             return False
-        return self._amount == other._amount
+        return self.amount == other.amount
 
     def __hash__(self):
-        return hash(self._amount)
+        return hash(self.amount)
 ```
 
 ## 구현된 기능
@@ -68,7 +63,6 @@ class Dollar:
 - ✅ `==` 연산자로 Dollar 객체 비교
 - ✅ `!=` 연산자로 불일치 확인
 - ✅ 해시 가능한 객체 (집합, 딕셔너리 키로 사용 가능)
-- ✅ `_amount` private 변수로 캡슐화
 
 ## 학습 포인트
 
