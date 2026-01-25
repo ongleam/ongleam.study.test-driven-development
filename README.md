@@ -10,7 +10,15 @@
 
 ## 구성
 
-각 연습 문제별로 별도의 디렉토리를 구성하여 단계별로 TDD를 적용합니다.
+```
+ongleam.study.tdd/
+├── part01/                   # Part 1: The Money Example (ch01-ch17)
+│   ├── ch01/                 # 각 챕터별 디렉토리
+│   │   ├── README.md         # 챕터 노트
+│   │   ├── currency.py       # 구현 코드
+│   │   └── test_currency.py  # 테스트 코드
+│   └── ...
+```
 
 ## TDD 사이클
 
@@ -20,23 +28,24 @@
 
 ## 테스트 실행 방법
 
-### Chapter 1 - Money 예제
-
 ```bash
-# 모든 테스트 실행
-python -m pytest ch-1/tests/
+# Part 1 전체 테스트 실행
+python -m pytest part01/
+
+# 특정 챕터 테스트 실행
+python -m pytest part01/ch01/
 
 # 특정 테스트 파일 실행
-python -m pytest ch-1/tests/test_currency.py
+python -m pytest part01/ch01/test_currency.py
 
 # 특정 테스트 케이스 실행
-python -m pytest ch-1/tests/test_currency.py::TestMoney::test_multiplication
+python -m pytest part01/ch01/test_currency.py::test_multiplication
 
 # 상세한 출력과 함께 실행
-python -m pytest ch-1/tests/ -v
+python -m pytest part01/ -v
 
 # 실패한 테스트만 다시 실행
-python -m pytest ch-1/tests/ --lf
+python -m pytest part01/ --lf
 ```
 
 ## 참고 자료

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Kent Beck의 『Test-Driven Development: By Example』을 기반으로 TDD를 연습하는 저장소입니다. Red-Green-Refactor 사이클을 따르며, 각 연습 문제는 별도 디렉토리(`ch-1`, `ch-2`, etc.)로 구성됩니다.
+Kent Beck의 『Test-Driven Development: By Example』을 기반으로 TDD를 연습하는 저장소입니다. Red-Green-Refactor 사이클을 따르며, 각 챕터는 별도 디렉토리(`part01/ch01`, `part01/ch02`, etc.)로 구성됩니다.
 
 ## TDD Workflow
 
@@ -21,17 +21,20 @@ Kent Beck의 『Test-Driven Development: By Example』을 기반으로 TDD를 �
 ### Running Tests
 
 ```bash
-# Run all tests in a chapter
-python -m pytest ch-1/tests/
+# Run all tests in part01
+python -m pytest part01/
+
+# Run tests in a specific chapter
+python -m pytest part01/ch01/
 
 # Run a specific test file
-python -m pytest ch-1/tests/test_currency.py
+python -m pytest part01/ch01/test_currency.py
 
 # Run a specific test function
-python -m pytest ch-1/tests/test_currency.py::test_function_name
+python -m pytest part01/ch01/test_currency.py::test_function_name
 
 # Run tests with verbose output
-python -m pytest -v ch-1/tests/
+python -m pytest -v part01/
 ```
 
 ## Architecture
@@ -39,16 +42,22 @@ python -m pytest -v ch-1/tests/
 ### Directory Structure
 
 ```
-tdd/
-├── ch-{n}/                 # Each chapter is a separate exercise
-│   ├── {module}.py         # Implementation code
-│   └── tests/
-│       └── test_{module}.py  # Test code following pytest conventions
+ongleam.study.tdd/
+├── part01/                   # Part 1: The Money Example
+│   ├── ch01/                 # Chapter 01
+│   │   ├── README.md         # Chapter notes
+│   │   ├── currency.py       # Implementation code
+│   │   └── test_currency.py  # Test code
+│   ├── ch02/                 # Chapter 02
+│   ├── ...
+│   ├── ch17/                 # Chapter 17
+│   ├── currency.py           # Shared currency module
+│   └── tests/                # Integration tests
 ```
 
 ### Test Organization
 
-- 테스트 파일은 `tests/` 디렉토리 내에 위치
+- 각 챕터 디렉토리 내에 테스트 파일 위치
 - pytest 네이밍 컨벤션: `test_*.py` 또는 `*_test.py`
 - 테스트 함수는 `test_`로 시작
 
