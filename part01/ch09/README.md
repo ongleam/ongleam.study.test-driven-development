@@ -1,5 +1,9 @@
 # Chapter 9: Times We're Livin' In
 
+> "We want to get to a common times() implementation, but we need to know which class to return." - Kent Beck
+
+📌 **패턴**: -
+
 ## 목표
 
 - 통화(currency) 개념 도입
@@ -15,9 +19,15 @@
 | Dollar 생성자 | `__init__(amount)` | `super().__init__(amount, "USD")` |
 | Franc 생성자  | `__init__(amount)` | `super().__init__(amount, "CHF")` |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. Red: 통화 테스트 작성
+1. **도메인 개념 추가**: 통화라는 현실 세계의 개념을 코드로 표현
+2. **생성자 체이닝**: `super().__init__()`로 부모 초기화
+3. **점진적 진화**: 기존 구조(추상 클래스, 팩토리 메서드) 유지하면서 기능 추가
+
+## TDD 사이클
+
+### Red: 통화 테스트 작성
 
 ```python
 def test_currency(self):
@@ -25,7 +35,7 @@ def test_currency(self):
     assert "CHF" == Money.franc(1).currency()
 ```
 
-### 2. Green: currency 구현
+### Green: currency 구현
 
 ```python
 class Money(ABC):
@@ -69,7 +79,7 @@ class Dollar extends Money {
 }
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - 통화를 생성자에서 부모로 전달
 - 하위 클래스가 자신의 통화 코드를 알고 있음
@@ -130,20 +140,14 @@ class Franc(Money):
 - ✅ `currency()` 메서드 추가
 - ✅ Dollar는 "USD", Franc은 "CHF"
 
-## 학습 포인트
-
-1. **도메인 개념 추가**: 통화라는 현실 세계의 개념을 코드로 표현
-2. **생성자 체이닝**: `super().__init__()`로 부모 초기화
-3. **점진적 진화**: 기존 구조(추상 클래스, 팩토리 메서드) 유지하면서 기능 추가
-
-## Kent Beck 인용
-
-> "We want to get to a common `times()` implementation, but we need to know which class to return."
-
-통화 개념을 도입하면 어떤 클래스를 반환할지 결정하는 데 사용할 수 있습니다.
-
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ times() 메서드가 여전히 중복
 - ⚠️ Dollar와 Franc 클래스가 거의 동일
 - ⚠️ times()에서 통화를 사용하여 통합 가능?
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch09/ -v
+```

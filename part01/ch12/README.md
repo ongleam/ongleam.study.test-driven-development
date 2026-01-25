@@ -1,28 +1,33 @@
 # Chapter 12: Addition, Finally
 
+> "Fake It (Till You Make It): Return a constant and gradually replace constants with variables until you have the real code." - Kent Beck
+
+📌 **패턴**: Fake It
+
 ## 목표
 
 - 덧셈 기능 시작 (`$5 + $5 = $10`)
 - Expression, Sum, Bank 도입
 - "Fake It" 패턴으로 테스트 통과
 
-## TDD 패턴: "Fake It"
+## 이전 챕터와의 차이
 
-Kent Beck:
+| 항목      | Chapter 11 | Chapter 12                   |
+| --------- | ---------- | ---------------------------- |
+| 연산      | times()만  | times() + plus()             |
+| 클래스    | Money만    | Money, Expression, Sum, Bank |
+| 덧셈 구현 | 없음       | Fake (하드코딩)              |
 
-> "Return a constant and gradually replace constants with variables until you have the real code."
+## 핵심 학습 포인트
 
-이 챕터에서는 **진짜로 하드코딩**합니다:
+1. **Fake It**: 테스트를 통과시키는 가장 간단한 방법
+2. **중복 = 미완성**: 테스트와 코드 사이의 중복(10)이 문제를 나타냄
+3. **작은 단계**: 큰 도약 대신 작은 단계로 진행
+4. **자신감**: 테스트가 통과하면 리팩토링 가능
 
-```python
-class Bank:
-    def reduce(self, source, to_currency):
-        return Money.dollar(10)  # 하드코딩!
-```
+## TDD 사이클
 
-## Red-Green-Refactor 사이클
-
-### 1. Red: 실패하는 테스트 작성
+### Red: 실패하는 테스트 작성
 
 ```python
 def test_simple_addition(self):
@@ -33,7 +38,7 @@ def test_simple_addition(self):
     assert Money.dollar(10) == reduced
 ```
 
-### 2. Green: "Fake It" - 하드코딩
+### Green: "Fake It" - 하드코딩
 
 가장 빠르게 테스트를 통과시키는 방법: **하드코딩**
 
@@ -43,7 +48,7 @@ class Bank:
         return Money.dollar(10)  # $5 + $5 = $10이니까!
 ```
 
-### 3. 문제 인식
+### Refactor: 문제 인식
 
 이 구현은 명백히 잘못되었습니다:
 
@@ -93,20 +98,11 @@ Chapter 12에서는 **오직 하나의 새 테스트**만 있습니다:
 
 - `test_simple_addition`
 
-## 학습 포인트
-
-1. **Fake It**: 테스트를 통과시키는 가장 간단한 방법
-2. **중복 = 미완성**: 테스트와 코드 사이의 중복(10)이 문제를 나타냄
-3. **작은 단계**: 큰 도약 대신 작은 단계로 진행
-4. **자신감**: 테스트가 통과하면 리팩토링 가능
-
 ## Kent Beck 인용
-
-> "Fake It (Till You Make It): Return a constant and gradually replace constants with variables until you have the real code."
 
 > "Duplication between test and code is a symptom of incomplete implementation."
 
-## 다음 챕터에서 해결할 문제
+## 다음 챕터 예고
 
 Chapter 13 "Make It"에서:
 
@@ -116,3 +112,9 @@ Chapter 13 "Make It"에서:
 - ❌ `test_reduce_sum` 추가
 - ❌ `test_reduce_money` 추가
 - ❌ 다형성 도입
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch12/ -v
+```

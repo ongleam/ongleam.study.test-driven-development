@@ -1,5 +1,9 @@
 # Chapter 8: Makin' Objects
 
+> "The two subclasses are subclasses of Money. If we can make Dollar and Franc disappear by providing the common functionality in Money, no one will have to know." - Kent Beck
+
+📌 **패턴**: Factory Method
+
 ## 목표
 
 - Money를 추상 클래스로 변환
@@ -15,9 +19,16 @@
 | 객체 생성      | `Dollar(5)`     | `Money.dollar(5)`       |
 | 테스트 의존성  | Dollar, Franc   | Money만                 |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. Red: 팩토리 메서드 테스트
+1. **추상 클래스**: 인스턴스화 불가, 서브클래스 강제
+2. **팩토리 메서드 패턴**: 객체 생성 로직 캡슐화
+3. **정보 은닉**: 클라이언트 코드가 구체 클래스를 몰라도 됨
+4. **테스트 독립성**: Money 인터페이스에만 의존
+
+## TDD 사이클
+
+### Red: 팩토리 메서드 테스트
 
 ```python
 def test_multiplication(self):
@@ -25,7 +36,7 @@ def test_multiplication(self):
     assert Money.dollar(10) == five.times(2)
 ```
 
-### 2. Green: 추상 클래스 + 팩토리 메서드
+### Green: 추상 클래스 + 팩토리 메서드
 
 ```python
 from abc import ABC, abstractmethod
@@ -65,7 +76,7 @@ abstract class Money {
 }
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - 테스트에서 Dollar, Franc 직접 참조 제거
 - Money 팩토리 메서드만 사용
@@ -116,21 +127,14 @@ class Franc(Money):
 - ✅ `Money.dollar()`, `Money.franc()` 팩토리 메서드
 - ✅ 테스트에서 하위 클래스 직접 참조 제거
 
-## 학습 포인트
-
-1. **추상 클래스**: 인스턴스화 불가, 서브클래스 강제
-2. **팩토리 메서드 패턴**: 객체 생성 로직 캡슐화
-3. **정보 은닉**: 클라이언트 코드가 구체 클래스를 몰라도 됨
-4. **테스트 독립성**: Money 인터페이스에만 의존
-
-## Kent Beck 인용
-
-> "The two subclasses are subclasses of `Money`. If we can make `Dollar` and `Franc` disappear by providing the common functionality in `Money`, no one will have to know."
-
-하위 클래스를 숨기면 클라이언트 코드가 구체적인 구현에 의존하지 않게 됩니다.
-
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ times() 메서드가 여전히 중복
 - ⚠️ 통화(currency) 개념 부재
 - ⚠️ Dollar와 Franc 클래스 제거 가능?
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch08/ -v
+```

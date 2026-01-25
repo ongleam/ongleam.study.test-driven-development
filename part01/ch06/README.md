@@ -1,5 +1,9 @@
 # Chapter 6: Equality for All, Redux
 
+> "We want common equals code, so we'll move it to the common superclass." - Kent Beck
+
+📌 **패턴**: Pull Up Method
+
 ## 목표
 
 - Dollar와 Franc의 중복 코드 제거
@@ -14,9 +18,15 @@
 | `__eq__` 위치 | 각 클래스에 중복   | Money에 통합               |
 | 코드 중복     | 있음               | 제거됨                     |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. 문제 인식: 중복 코드
+1. **상속을 통한 중복 제거**: 공통 코드를 상위 클래스로 이동
+2. **점진적 리팩토링**: 테스트가 통과하는 상태 유지하면서 변경
+3. **리스코프 치환 원칙**: 하위 클래스는 상위 클래스를 대체할 수 있어야 함
+
+## TDD 사이클
+
+### Red: 문제 인식 - 중복 코드
 
 ```python
 # Dollar
@@ -32,7 +42,7 @@ def __eq__(self, other):
     return self._amount == other._amount
 ```
 
-### 2. Green: Money 상위 클래스 도입
+### Green: Money 상위 클래스 도입
 
 ```python
 class Money:
@@ -58,23 +68,43 @@ class Franc(Money):
         return Franc(self._amount * multiplier)
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - Dollar의 `__eq__`를 Money로 이동
 - Franc의 `__eq__`를 삭제 (Money 상속)
 - `isinstance(other, Dollar)` → `isinstance(other, Money)`
+
+## 전체 코드
+
+```python
+class Money:
+    def __init__(self, amount):
+        self._amount = amount
+
+    def __eq__(self, other):
+        if not isinstance(other, Money):
+            return False
+        return self._amount == other._amount
+
+    def __hash__(self):
+        return hash(self._amount)
+
+
+class Dollar(Money):
+    def times(self, multiplier):
+        return Dollar(self._amount * multiplier)
+
+
+class Franc(Money):
+    def times(self, multiplier):
+        return Franc(self._amount * multiplier)
+```
 
 ## 구현된 기능
 
 - ✅ Money 상위 클래스
 - ✅ Dollar, Franc이 Money 상속
 - ✅ `__eq__` 중복 제거
-
-## 학습 포인트
-
-1. **상속을 통한 중복 제거**: 공통 코드를 상위 클래스로 이동
-2. **점진적 리팩토링**: 테스트가 통과하는 상태 유지하면서 변경
-3. **리스코프 치환 원칙**: 하위 클래스는 상위 클래스를 대체할 수 있어야 함
 
 ## Kent Beck의 리팩토링 단계
 
@@ -84,8 +114,14 @@ class Franc(Money):
 4. Franc에서도 동일하게 적용
 5. 중복된 Franc의 `__eq__` 삭제
 
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ **Dollar(5) == Franc(5)가 True!**
 - ⚠️ 서로 다른 통화인데 같다고 판단됨
 - ⚠️ 다음 챕터 "Apples and Oranges"에서 해결
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch06/ -v
+```

@@ -1,5 +1,9 @@
 # Chapter 11: The Root of All Evil
 
+> "The root of all evil" - Donald Knuth의 "premature optimization is the root of all evil"에서 영감
+
+📌 **패턴**: -
+
 ## 목표
 
 - Dollar와 Franc 서브클래스 완전 제거
@@ -14,9 +18,16 @@
 | 서브클래스  | 빈 껍데기로 존재       | 완전 제거  |
 | 코드 복잡도 | 3개 클래스             | 1개 클래스 |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. Red: 기존 테스트 유지
+1. **"The Root of All Evil"**: 불필요한 중복과 복잡성이 악의 근원
+2. **데이터 주도 설계**: 타입 계층 대신 데이터(currency)로 구분
+3. **단순화의 힘**: 3개 클래스 → 1개 클래스
+4. **안전한 리팩토링**: 테스트 덕분에 대담한 삭제 가능
+
+## TDD 사이클
+
+### Red: 기존 테스트 유지
 
 서브클래스 제거 후에도 모든 테스트가 통과해야 함:
 
@@ -26,7 +37,7 @@ def test_multiplication(self):
     assert Money.dollar(10) == five.times(2)
 ```
 
-### 2. Green: 서브클래스 제거
+### Green: 서브클래스 제거
 
 Dollar와 Franc 클래스를 완전히 삭제:
 
@@ -50,7 +61,7 @@ class Money:
         return Money(amount, "CHF")
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - 불필요한 상속 계층 제거
 - 코드 단순화 완료
@@ -91,19 +102,6 @@ class Money:
 - ✅ 팩토리 메서드로 통화별 생성
 - ✅ currency 기반 동등성 비교
 
-## 학습 포인트
-
-1. **"The Root of All Evil"**: 불필요한 중복과 복잡성이 악의 근원
-2. **데이터 주도 설계**: 타입 계층 대신 데이터(currency)로 구분
-3. **단순화의 힘**: 3개 클래스 → 1개 클래스
-4. **안전한 리팩토링**: 테스트 덕분에 대담한 삭제 가능
-
-## Kent Beck 인용
-
-> "The root of all evil" (Donald Knuth의 "premature optimization is the root of all evil"에서 영감)
-
-불필요한 서브클래스는 복잡성을 추가할 뿐입니다. 테스트가 있으면 과감하게 제거할 수 있습니다.
-
 ## 코드 진화 요약 (ch01 → ch11)
 
 ```
@@ -117,8 +115,14 @@ ch10:    times() Money로 통합, currency 비교
 ch11:    Dollar/Franc 서브클래스 제거 → Money만!
 ```
 
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ 아직 덧셈 기능 없음 (`$5 + $5 = $10`)
 - ⚠️ 다중 통화 계산 필요 (`$5 + 10 CHF`)
 - ⚠️ Expression 인터페이스 도입 예정
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch11/ -v
+```

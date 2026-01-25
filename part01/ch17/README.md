@@ -1,10 +1,12 @@
 # Chapter 17: Money Retrospective
 
+> "TDD is an awareness of the gap between decision and feedback during programming, and techniques to control that gap." - Kent Beck
+
+📌 **주제**: 회고, 메트릭스, 프로세스 분석
+
 ## 핵심 개념
 
-**Part 1 회고 - 과정과 결과 되돌아보기**
-
-> "Let's look back and review what we've done." - Kent Beck
+Part 1 회고 - 과정과 결과 되돌아보기
 
 ## 회고 주제
 
@@ -26,21 +28,7 @@ Money 예제 작성 중 테스트 실행 횟수: **약 125회**
 - 작은 단계마다 피드백 획득
 - Red → Green → Refactor 사이클 반복
 
-### 3. Code Metrics (코드 측정)
-
-```
-┌─────────────────┬───────────┬───────────┐
-│                 │ 프로덕션  │ 테스트    │
-├─────────────────┼───────────┼───────────┤
-│ 라인 수         │ ~80       │ ~90       │
-│ 함수 수         │ ~15       │ ~13       │
-│ 복잡도          │ 낮음      │ 매우 낮음 │
-└─────────────────┴───────────┴───────────┘
-```
-
-**낮은 복잡도의 이유**: 다형성 활용으로 조건문 최소화
-
-### 4. Process (TDD 프로세스)
+### 3. Process (TDD 프로세스)
 
 | 단계     | 활동                 |
 | -------- | -------------------- |
@@ -54,7 +42,7 @@ Money 예제 작성 중 테스트 실행 횟수: **약 125회**
 - **Triangulation** - 두 테스트로 일반화 유도 (Ch13)
 - **Obvious Implementation** - 명확하면 바로 구현
 
-### 5. Test Quality (테스트 품질)
+### 4. Test Quality (테스트 품질)
 
 **Statement Coverage**: 높음 (거의 100%)
 
@@ -65,6 +53,20 @@ TDD 테스트의 특징:
   - 성능 테스트
   - 사용성 테스트
   - 통합 테스트
+
+## 코드 메트릭스
+
+```
+┌─────────────────┬───────────┬───────────┐
+│                 │ 프로덕션  │ 테스트    │
+├─────────────────┼───────────┼───────────┤
+│ 라인 수         │ ~80       │ ~90       │
+│ 함수 수         │ ~15       │ ~13       │
+│ 복잡도          │ 낮음      │ 매우 낮음 │
+└─────────────────┴───────────┴───────────┘
+```
+
+**낮은 복잡도의 이유**: 다형성 활용으로 조건문 최소화
 
 ## 남은 중복
 
@@ -86,16 +88,18 @@ class Expression(ABC):
         return Sum(self, addend)  # 공통 구현
 ```
 
-## TDD의 핵심 교훈
+## 핵심 교훈
 
 ### "Clean Code That Works"
-
-> "TDD is an awareness of the gap between decision and feedback
-> during programming, and techniques to control that gap."
 
 1. **예측 가능한 개발** - 언제 끝나는지 알 수 있음
 2. **긴 버그 꼬리 없음** - 작은 단계로 버그 조기 발견
 3. **학습 기회** - 코드가 가르쳐주는 모든 것을 배울 수 있음
+
+### TDD의 가치
+
+- 결정과 피드백 사이의 간격을 인식
+- 그 간격을 제어하는 기법
 
 ## Part 1 완료!
 
@@ -111,7 +115,7 @@ class Expression(ABC):
 - 테스트 프레임워크 직접 구현
 - Python으로 xUnit 만들기
 
-## 테스트
+## 테스트 실행
 
 ```bash
 python -m pytest part01/ch17/ -v

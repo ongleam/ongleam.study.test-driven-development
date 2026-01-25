@@ -1,5 +1,9 @@
 # Chapter 7: Apples and Oranges
 
+> "Using classes like this in model code is a bit smelly." - Kent Beck
+
+📌 **패턴**: -
+
 ## 목표
 
 - Dollar와 Franc 비교 문제 해결
@@ -13,9 +17,15 @@
 | `Dollar(5) == Franc(5)` | True (버그!) | False (해결)  |
 | `__eq__` 비교           | amount만     | amount + type |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. Red: 실패하는 테스트 발견
+1. **getClass() 사용**: 정확한 런타임 타입 비교
+2. **Code Smell**: "Using classes like this in model code is a bit smelly" - Kent Beck
+3. **임시 해결책**: 나중에 통화(currency) 개념으로 대체될 예정
+
+## TDD 사이클
+
+### Red: 실패하는 테스트 발견
 
 ```python
 def test_different_class_equality(self):
@@ -24,7 +34,7 @@ def test_different_class_equality(self):
 
 Kent Beck: "Dollars are Francs" - 이 버그를 발견
 
-### 2. Green: getClass() 비교 추가
+### Green: getClass() 비교 추가
 
 ```python
 class Money:
@@ -43,7 +53,7 @@ public boolean equals(Object object) {
 }
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - Money 클래스의 `__eq__`만 수정
 - Dollar, Franc의 중복 `__eq__` 불필요
@@ -78,20 +88,14 @@ class Franc(Money):
 - ✅ `type()` 비교로 클래스 구분
 - ✅ Money 상위 클래스에서 통합 관리
 
-## 학습 포인트
-
-1. **getClass() 사용**: 정확한 런타임 타입 비교
-2. **Code Smell**: "Using classes like this in model code is a bit smelly" - Kent Beck
-3. **임시 해결책**: 나중에 통화(currency) 개념으로 대체될 예정
-
-## Kent Beck 인용
-
-> "Using classes like this in model code is a bit smelly."
-
-클래스 타입으로 비교하는 것은 임시 해결책이며, 나중에 통화(currency) 속성으로 대체됩니다.
-
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ Dollar와 Franc의 times() 중복
 - ⚠️ 클래스 대신 통화(currency) 개념 필요
 - ⚠️ 팩토리 메서드 필요
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch07/ -v
+```

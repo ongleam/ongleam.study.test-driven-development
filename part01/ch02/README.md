@@ -1,5 +1,9 @@
 # Chapter 2: Degenerate Objects
 
+> "The translation of a feeling (for example, disgust at side effects) into a test (for example, multiply the same Dollar twice) is a common theme of TDD." - Kent Beck
+
+📌 **패턴**: Value Object
+
 ## 목표
 
 - Side effect 제거
@@ -13,9 +17,16 @@
 | Side effect      | 있음 (객체 수정) | 없음           |
 | 동일 객체 재사용 | 불가능           | 가능           |
 
-## Red-Green-Refactor 사이클
+## 핵심 학습 포인트
 
-### 1. Red: 실패하는 테스트 작성
+1. **값 객체(Value Object)**: 연산 결과는 새 객체로 반환
+2. **Side effect 제거**: 메서드 호출이 객체 상태를 변경하지 않음
+3. **"feeling → test" 변환**: side effect에 대한 불편함을 테스트로 표현
+4. **암묵적 검증**: 별도 immutability 테스트 없이, 같은 객체 재사용으로 검증
+
+## TDD 사이클
+
+### Red: 실패하는 테스트
 
 ```python
 def test_multiplication(self):
@@ -28,7 +39,7 @@ def test_multiplication(self):
 
 **핵심**: 같은 `five` 객체로 두 번 곱셈. Side effect가 있다면 `five.times(3)`은 `15`가 아닌 `30`이 됨.
 
-### 2. Green: 구현
+### Green: 최소 구현
 
 ```python
 class Dollar:
@@ -40,9 +51,20 @@ class Dollar:
         return Dollar(self.amount * multiplier)
 ```
 
-### 3. Refactor
+### Refactor: 개선
 
 - 객체 수정 → 새 객체 생성으로 변경
+
+## 전체 코드
+
+```python
+class Dollar:
+    def __init__(self, amount):
+        self.amount = amount
+
+    def times(self, multiplier):
+        return Dollar(self.amount * multiplier)
+```
 
 ## 구현된 기능
 
@@ -50,18 +72,13 @@ class Dollar:
 - ✅ `times()` 메서드가 새로운 Dollar 객체 반환
 - ✅ 동일 객체로 여러 번 연산 가능
 
-## 학습 포인트
-
-1. **값 객체(Value Object)**: 연산 결과는 새 객체로 반환
-2. **Side effect 제거**: 메서드 호출이 객체 상태를 변경하지 않음
-3. **"feeling → test" 변환**: side effect에 대한 불편함을 테스트로 표현
-4. **암묵적 검증**: 별도 immutability 테스트 없이, 같은 객체 재사용으로 검증
-
-## Kent Beck 인용
-
-> "The translation of a feeling (for example, disgust at side effects) into a test (for example, multiply the same Dollar twice) is a common theme of TDD."
-
-## 문제점 (다음 챕터에서 해결)
+## 다음 챕터 예고
 
 - ⚠️ 동등성 비교(`==`)가 불가능
 - ⚠️ `product.amount`로 직접 비교해야 함
+
+## 테스트 실행
+
+```bash
+python -m pytest part01/ch02/ -v
+```
