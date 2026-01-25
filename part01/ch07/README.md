@@ -2,50 +2,96 @@
 
 ## 목표
 
-- 동등성 비교를 더 명확하게 개선
-- type() 사용으로 타입 비교 단순화
+- Dollar와 Franc 비교 문제 해결
+- `getClass()` (Python: `type()`) 비교 추가
+- "사과와 오렌지는 비교할 수 없다"
 
 ## 이전 챕터와의 차이
 
-- `isinstance()` 대신 `type()` 사용
-- 더 간결한 동등성 비교 로직
-- **hash**에 타입 정보 포함
+| 항목                    | Chapter 6    | Chapter 7     |
+| ----------------------- | ------------ | ------------- |
+| `Dollar(5) == Franc(5)` | True (버그!) | False (해결)  |
+| `__eq__` 비교           | amount만     | amount + type |
 
 ## Red-Green-Refactor 사이클
 
-### 1. Red: 기존 테스트 유지
-
-- 기존 테스트가 모두 통과해야 함
-
-### 2. Green: 구현 개선
+### 1. Red: 실패하는 테스트 발견
 
 ```python
-def __eq__(self, other):
-    # isinstance() 대신 type() 사용
-    return self._amount == other._amount and type(self) == type(other)
+def test_different_class_equality(self):
+    assert Dollar(5) != Franc(5)  # Chapter 6에서 실패!
+```
 
-def __hash__(self):
-    return hash((self._amount, type(self)))
+Kent Beck: "Dollars are Francs" - 이 버그를 발견
+
+### 2. Green: getClass() 비교 추가
+
+```python
+class Money:
+    def __eq__(self, other):
+        # amount와 class가 모두 같아야 동등
+        return self._amount == other._amount and type(self) == type(other)
+```
+
+Java 원본:
+
+```java
+public boolean equals(Object object) {
+    Money money = (Money) object;
+    return amount == money.amount
+        && getClass().equals(money.getClass());
+}
 ```
 
 ### 3. Refactor
 
-- isinstance() 체크 제거
-- 더 간결한 표현식
+- Money 클래스의 `__eq__`만 수정
+- Dollar, Franc의 중복 `__eq__` 불필요
+
+## 전체 코드
+
+```python
+class Money:
+    def __init__(self, amount):
+        self._amount = amount
+
+    def __eq__(self, other):
+        return self._amount == other._amount and type(self) == type(other)
+
+    def __hash__(self):
+        return hash((self._amount, type(self)))
+
+
+class Dollar(Money):
+    def times(self, multiplier):
+        return Dollar(self._amount * multiplier)
+
+
+class Franc(Money):
+    def times(self, multiplier):
+        return Franc(self._amount * multiplier)
+```
 
 ## 구현된 기능
 
-- ✅ type()을 사용한 정확한 타입 비교
-- ✅ 간결해진 동등성 로직
-- ✅ 타입을 포함한 해시값
+- ✅ `Dollar(5) != Franc(5)` 이제 True
+- ✅ `type()` 비교로 클래스 구분
+- ✅ Money 상위 클래스에서 통합 관리
 
 ## 학습 포인트
 
-1. **type() vs isinstance()**: 정확한 타입 비교 vs 상속 고려
-2. **코드 단순화**: 조건문을 표현식으로 변경
-3. **해시 함수**: 동등성 비교에 사용되는 모든 필드 포함
+1. **getClass() 사용**: 정확한 런타임 타입 비교
+2. **Code Smell**: "Using classes like this in model code is a bit smelly" - Kent Beck
+3. **임시 해결책**: 나중에 통화(currency) 개념으로 대체될 예정
+
+## Kent Beck 인용
+
+> "Using classes like this in model code is a bit smelly."
+
+클래스 타입으로 비교하는 것은 임시 해결책이며, 나중에 통화(currency) 속성으로 대체됩니다.
 
 ## 문제점 (다음 챕터에서 해결)
 
-- 여전히 Dollar와 Franc의 중복 코드
-- 공통 부모 클래스 필요
+- ⚠️ Dollar와 Franc의 times() 중복
+- ⚠️ 클래스 대신 통화(currency) 개념 필요
+- ⚠️ 팩토리 메서드 필요

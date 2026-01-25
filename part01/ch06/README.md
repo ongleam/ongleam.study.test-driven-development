@@ -2,46 +2,90 @@
 
 ## 목표
 
-- Dollar와 Franc 간의 비교 테스트
-- 서로 다른 클래스는 같지 않음을 확인
+- Dollar와 Franc의 중복 코드 제거
+- 공통 상위 클래스 `Money` 도입
+- `__eq__` 메서드를 상위 클래스로 이동
 
 ## 이전 챕터와의 차이
 
-- `Dollar(5) != Franc(5)` 테스트 추가
-- 기존 `isinstance()` 체크가 이미 이 동작을 보장함
+| 항목          | Chapter 5          | Chapter 6                  |
+| ------------- | ------------------ | -------------------------- |
+| 클래스 구조   | Dollar, Franc 독립 | Money ← Dollar, Franc 상속 |
+| `__eq__` 위치 | 각 클래스에 중복   | Money에 통합               |
+| 코드 중복     | 있음               | 제거됨                     |
 
 ## Red-Green-Refactor 사이클
 
-### 1. Red: 실패하는 테스트 작성
+### 1. 문제 인식: 중복 코드
 
 ```python
-def test_equality(self):
-    assert Dollar(5) == Dollar(5)
-    assert Dollar(5) != Dollar(6)
-    assert Dollar(5) != Franc(5)  # 새로운 테스트
+# Dollar
+def __eq__(self, other):
+    if not isinstance(other, Dollar):
+        return False
+    return self._amount == other._amount
+
+# Franc (거의 동일!)
+def __eq__(self, other):
+    if not isinstance(other, Franc):
+        return False
+    return self._amount == other._amount
 ```
 
-### 2. Green: 구현
+### 2. Green: Money 상위 클래스 도입
 
-- 이미 구현되어 있음 (isinstance() 체크가 타입을 구분)
-- 테스트는 바로 통과
+```python
+class Money:
+    def __init__(self, amount):
+        self._amount = amount
+
+    def __eq__(self, other):
+        if not isinstance(other, Money):
+            return False
+        return self._amount == other._amount
+
+    def __hash__(self):
+        return hash(self._amount)
+
+
+class Dollar(Money):
+    def times(self, multiplier):
+        return Dollar(self._amount * multiplier)
+
+
+class Franc(Money):
+    def times(self, multiplier):
+        return Franc(self._amount * multiplier)
+```
 
 ### 3. Refactor
 
-- 리팩토링 없음 (다음 챕터를 위한 준비)
+- Dollar의 `__eq__`를 Money로 이동
+- Franc의 `__eq__`를 삭제 (Money 상속)
+- `isinstance(other, Dollar)` → `isinstance(other, Money)`
 
 ## 구현된 기능
 
-- ✅ Dollar와 Franc은 같은 금액이어도 다름
-- ✅ isinstance()로 타입 체크
+- ✅ Money 상위 클래스
+- ✅ Dollar, Franc이 Money 상속
+- ✅ `__eq__` 중복 제거
 
 ## 학습 포인트
 
-1. **테스트의 가치**: 이미 동작하는 것도 테스트로 명시적으로 확인
-2. **타입 안전성**: isinstance()가 다른 타입을 구분
-3. **문서로서의 테스트**: 코드의 의도를 명확하게 표현
+1. **상속을 통한 중복 제거**: 공통 코드를 상위 클래스로 이동
+2. **점진적 리팩토링**: 테스트가 통과하는 상태 유지하면서 변경
+3. **리스코프 치환 원칙**: 하위 클래스는 상위 클래스를 대체할 수 있어야 함
+
+## Kent Beck의 리팩토링 단계
+
+1. Dollar의 `_amount`를 protected로 변경 (Money에서 접근 가능)
+2. `__eq__`의 일부를 Dollar에서 Money로 이동
+3. 테스트 통과 확인
+4. Franc에서도 동일하게 적용
+5. 중복된 Franc의 `__eq__` 삭제
 
 ## 문제점 (다음 챕터에서 해결)
 
-- 여전히 Dollar와 Franc의 코드 중복
-- 동등성 비교 로직도 중복
+- ⚠️ **Dollar(5) == Franc(5)가 True!**
+- ⚠️ 서로 다른 통화인데 같다고 판단됨
+- ⚠️ 다음 챕터 "Apples and Oranges"에서 해결
