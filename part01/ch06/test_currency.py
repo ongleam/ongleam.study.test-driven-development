@@ -17,8 +17,6 @@ class TestFranc:
 
 
 class TestMoney:
-
-    
     def test_equality(self):
         # Dollar 동등성
         assert Dollar(5) == Dollar(5)
