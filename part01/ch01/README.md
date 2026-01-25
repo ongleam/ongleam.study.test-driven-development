@@ -1,4 +1,4 @@
-# Chapter 1: Multiplication
+# Chapter 1: Multi-Currency Money
 
 ## 목표
 
@@ -16,8 +16,8 @@
 ```python
 def test_multiplication(self):
     five = Dollar(5)
-    product = five.times(2)
-    assert 10 == product.amount
+    five.times(2)
+    assert 10 == five.amount
 ```
 
 ### 2. Green: 최소 구현
@@ -28,7 +28,7 @@ class Dollar:
         self.amount = amount
 
     def times(self, multiplier):
-        return Dollar(self.amount * multiplier)
+        self.amount *= multiplier  # side effect: 객체 자체를 수정
 ```
 
 ### 3. Refactor
@@ -38,7 +38,7 @@ class Dollar:
 ## 구현된 기능
 
 - ✅ Dollar 클래스
-- ✅ times() 메서드로 곱셈
+- ✅ times() 메서드로 곱셈 (side effect 방식)
 
 ## 학습 포인트
 
@@ -48,6 +48,6 @@ class Dollar:
 
 ## 문제점 (다음 챕터에서 해결)
 
-- amount가 public이라 캡슐화 부족
-- 동등성 비교 불가능
-- Dollar 객체가 변경 가능
+- ⚠️ **Side Effect**: `times()` 호출 시 객체 자체가 변경됨
+- ⚠️ 같은 Dollar 객체로 여러 번 곱셈 불가능
+- ⚠️ 동등성 비교 불가능
