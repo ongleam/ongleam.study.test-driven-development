@@ -1,4 +1,4 @@
-from part01.ch08.currency import Dollar, Franc, dollar, franc
+from part01.ch08.currency import dollar, franc
 
 
 class TestMoney:

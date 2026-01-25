@@ -2,6 +2,44 @@
 
 켄트 벡(Kent Beck)의 『Test-Driven Development: By Example』을 바탕으로 TDD를 연습하는 저장소입니다.
 
+## 환경 설정
+
+### uv 설치 (권장)
+
+```bash
+# macOS/Linux
+curl -LsSf https://astral.sh/uv/install.sh | sh
+
+# Windows
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+```
+
+### 프로젝트 의존성 설치
+
+```bash
+# 가상환경 생성 및 의존성 설치
+uv sync --dev
+
+# 또는 pip 사용시
+pip install -e ".[dev]"
+```
+
+### 개발 도구
+
+- **pytest**: 테스트 프레임워크
+- **ruff**: 린터 및 포매터
+
+```bash
+# Ruff 린트 검사
+uv run ruff check .
+
+# Ruff 자동 수정
+uv run ruff check --fix .
+
+# Ruff 포매팅
+uv run ruff format .
+```
+
 ## 목표
 
 - Red-Green-Refactor 사이클 체득
@@ -30,22 +68,22 @@ ongleam.study.tdd/
 
 ```bash
 # Part 1 전체 테스트 실행
-python -m pytest part01/
+uv run pytest part01/
 
 # 특정 챕터 테스트 실행
-python -m pytest part01/ch01/
+uv run pytest part01/ch01/
 
 # 특정 테스트 파일 실행
-python -m pytest part01/ch01/test_currency.py
+uv run pytest part01/ch01/test_currency.py
 
 # 특정 테스트 케이스 실행
-python -m pytest part01/ch01/test_currency.py::test_multiplication
+uv run pytest part01/ch01/test_currency.py::test_multiplication
 
 # 상세한 출력과 함께 실행
-python -m pytest part01/ -v
+uv run pytest part01/ -v
 
 # 실패한 테스트만 다시 실행
-python -m pytest part01/ --lf
+uv run pytest part01/ --lf
 ```
 
 ## 참고 자료

@@ -1,17 +1,24 @@
 from part01.ch06.currency import Dollar, Franc
 
 
-class TestMoney:
-    def test_dollar_multiplication(self):
+class TestDollar:
+    def test_multiplication(self):
         five = Dollar(5)
         assert Dollar(10) == five.times(2)
         assert Dollar(15) == five.times(3)
 
+
+class TestFranc:
+    # Chapter 5: Franc 곱셈 테스트
     def test_franc_multiplication(self):
         five = Franc(5)
         assert Franc(10) == five.times(2)
         assert Franc(15) == five.times(3)
 
+
+class TestMoney:
+
+    
     def test_equality(self):
         # Dollar 동등성
         assert Dollar(5) == Dollar(5)

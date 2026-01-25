@@ -1,4 +1,4 @@
-from part01.ch15.currency import dollar, franc, Bank
+from part01.ch15.currency import Bank, dollar, franc
 
 
 class TestMoney:
