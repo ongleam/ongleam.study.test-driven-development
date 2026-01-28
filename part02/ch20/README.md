@@ -112,24 +112,10 @@ class WasRun(TestCase):
 
 ```python
 class TestCaseTest(TestCase):
-    def setUp(self) -> None:
-        self.test = WasRun("testMethod")
-
-    def testRunning(self) -> None:
-        self.test.run()
-        assert self.test.wasRun
-
-    def testSetUp(self) -> None:
-        self.test.run()
-        assert self.test.wasSetUp
-
-    def testTearDown(self) -> None:
-        self.test.run()
-        assert self.test.wasTornDown
-
     def testTemplateMethod(self) -> None:
-        self.test.run()
-        assert self.test.log == "setUp testMethod tearDown "
+        test = WasRun("testMethod")
+        test.run()
+        assert test.log == "setUp testMethod tearDown "
 ```
 
 ## 구현된 기능

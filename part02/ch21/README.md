@@ -130,38 +130,19 @@ class WasRun(TestCase):
 
 ```python
 class TestCaseTest(TestCase):
-    def setUp(self) -> None:
-        self.test = WasRun("testMethod")
-
-    def testRunning(self) -> None:
-        self.test.run()
-        assert self.test.wasRun
-
-    def testSetUp(self) -> None:
-        self.test.run()
-        assert self.test.wasSetUp
-
-    def testTearDown(self) -> None:
-        self.test.run()
-        assert self.test.wasTornDown
-
     def testTemplateMethod(self) -> None:
-        self.test.run()
-        assert self.test.log == "setUp testMethod tearDown "
+        test = WasRun("testMethod")
+        test.run()
+        assert test.log == "setUp testMethod tearDown "
 
     def testResult(self) -> None:
-        result = self.test.run()
+        test = WasRun("testMethod")
+        result = test.run()
         assert result.summary() == "1 run, 0 failed"
 
     def testFailedResult(self) -> None:
         test = WasRun("testBrokenMethod")
         result = test.run()
-        assert result.summary() == "1 run, 1 failed"
-
-    def testFailedResultFormatting(self) -> None:
-        result = TestResult()
-        result.testStarted()
-        result.testFailed()
         assert result.summary() == "1 run, 1 failed"
 ```
 

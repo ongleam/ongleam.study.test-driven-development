@@ -102,11 +102,14 @@ class WasRunWithBrokenSetUp(TestCase):
 
 ```python
 class TestCaseTest(TestCase):
-    def setUp(self) -> None:
-        self.test = WasRun("testMethod")
+    def testTemplateMethod(self) -> None:
+        test = WasRun("testMethod")
+        test.run()
+        assert test.log == "setUp testMethod tearDown "
 
     def testResult(self) -> None:
-        result = self.test.run()
+        test = WasRun("testMethod")
+        result = test.run()
         assert result.summary() == "1 run, 0 failed"
 
     def testFailedResult(self) -> None:
