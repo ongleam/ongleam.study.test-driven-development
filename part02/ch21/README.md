@@ -13,18 +13,18 @@
 
 ## 이전 챕터와의 차이
 
-| 항목      | Chapter 20    | Chapter 21                |
-| --------- | ------------- | ------------------------- |
-| 결과 반환 | 없음          | TestResult 반환           |
-| 결과 추적 | 개별 플래그만 | runCount, errorCount 추적 |
-| 요약 출력 | 없음          | summary() 메서드          |
-| 예외 처리 | 없음          | try/except로 실패 캐치    |
+| 항목      | Chapter 20    | Chapter 21                  |
+| --------- | ------------- | --------------------------- |
+| 결과 반환 | 없음          | TestResult 반환             |
+| 결과 추적 | 개별 플래그만 | runCount, failureCount 추적 |
+| 요약 출력 | 없음          | summary() 메서드            |
+| 예외 처리 | 없음          | try/except로 실패 캐치      |
 
 ## 핵심 학습 포인트
 
 1. **Collecting Parameter**: 결과를 수집하는 객체를 전달
 2. **TestResult**: 테스트 실행 결과를 캡슐화
-3. **runCount/errorCount**: 실행/실패 테스트 수 추적
+3. **runCount/failureCount**: 실행/실패 테스트 수 추적
 
 ## TDD 사이클
 
@@ -47,16 +47,16 @@ def testFailedResult(self) -> None:
 class TestResult:
     def __init__(self) -> None:
         self.runCount = 0
-        self.errorCount = 0
+        self.failureCount = 0
 
     def testStarted(self) -> None:
         self.runCount = self.runCount + 1
 
     def testFailed(self) -> None:
-        self.errorCount = self.errorCount + 1
+        self.failureCount = self.failureCount + 1
 
     def summary(self) -> str:
-        return f"{self.runCount} run, {self.errorCount} failed"
+        return f"{self.runCount} run, {self.failureCount} failed"
 
 
 class TestCase:
@@ -81,16 +81,16 @@ class TestResult:
 
     def __init__(self) -> None:
         self.runCount = 0
-        self.errorCount = 0
+        self.failureCount = 0
 
     def testStarted(self) -> None:
         self.runCount = self.runCount + 1
 
     def testFailed(self) -> None:
-        self.errorCount = self.errorCount + 1
+        self.failureCount = self.failureCount + 1
 
     def summary(self) -> str:
-        return f"{self.runCount} run, {self.errorCount} failed"
+        return f"{self.runCount} run, {self.failureCount} failed"
 
 
 class TestCase:
@@ -169,7 +169,7 @@ class TestCaseTest(TestCase):
 
 - ✅ `TestResult` 클래스 추가
 - ✅ `runCount`로 실행 횟수 추적
-- ✅ `errorCount`로 실패 횟수 추적
+- ✅ `failureCount`로 실패 횟수 추적
 - ✅ `testStarted()` 메서드
 - ✅ `testFailed()` 메서드
 - ✅ `summary()` 메서드로 결과 출력

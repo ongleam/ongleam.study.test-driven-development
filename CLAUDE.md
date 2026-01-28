@@ -67,6 +67,7 @@ ongleam.study.test-driven-development/
 │   ├── ch19/                 # Chapter 19: Set the Table (setUp)
 │   ├── ch20/                 # Chapter 20: Cleaning Up After (tearDown)
 │   ├── ch21/                 # Chapter 21: Counting (TestResult)
+│   ├── ch22/                 # Chapter 22: Dealing with Failure (testFailedResultFormatting)
 │   └── ...                   # Upcoming chapters
 ```
 

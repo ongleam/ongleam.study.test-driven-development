@@ -1,7 +1,7 @@
-"""Chapter 21: Counting
+"""Chapter 22: Dealing with Failure
 
-TestResult 클래스를 도입하여 테스트 결과 수집.
-실행된 테스트 수를 추적.
+실패한 테스트 결과 포맷팅.
+TestResult에 failureCount와 testFailed 메서드 추가.
 """
 
 
@@ -45,11 +45,14 @@ class TestCase:
         pass
 
     def run(self) -> TestResult:
-        """setUp -> 테스트 메서드 -> tearDown 순서로 실행"""
+        """setUp -> 테스트 메서드 -> tearDown 순서로 실행
+
+        setUp 또는 테스트 메서드에서 예외 발생 시에도 tearDown 호출.
+        """
         result = TestResult()
         result.testStarted()
-        self.setUp()
         try:
+            self.setUp()
             method = getattr(self, self.name)
             method()
         except Exception:
@@ -87,3 +90,15 @@ class WasRun(TestCase):
     def testBrokenMethod(self) -> None:
         """실패하는 테스트 메서드"""
         raise Exception
+
+
+class WasRunWithBrokenSetUp(TestCase):
+    """setUp에서 실패하는 테스트용 클래스"""
+
+    def setUp(self) -> None:
+        """setUp에서 예외 발생"""
+        raise Exception
+
+    def testMethod(self) -> None:
+        """테스트 메서드 (호출되지 않음)"""
+        pass
