@@ -18,9 +18,9 @@ class TestCaseTest(TestCase):
     def testRunning(self) -> None:
         """run()이 테스트 메서드를 실행하는지 확인"""
         test = WasRun("testMethod")
-        assert test.wasRun is None  # 아직 실행 안 됨
+        assert not test.wasRun  # 아직 실행 안 됨
         test.run()
-        assert test.wasRun is True  # 실행됨
+        assert test.wasRun
 
 
 # pytest용 래퍼 함수

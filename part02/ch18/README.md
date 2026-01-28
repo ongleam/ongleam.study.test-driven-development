@@ -33,7 +33,7 @@
 test = WasRun("testMethod")
 print(test.wasRun)  # None (아직 실행 안 됨)
 test.testMethod()
-print(test.wasRun)  # True (실행됨)
+print(test.wasRun)  # 1 (실행됨)
 ```
 
 ### Green: 최소 구현
@@ -44,7 +44,7 @@ class WasRun:
         self.wasRun = None
 
     def testMethod(self):
-        self.wasRun = True
+        self.wasRun = 1
 ```
 
 ### Refactor: TestCase 추출
@@ -65,7 +65,7 @@ class WasRun(TestCase):
         self.wasRun = None
 
     def testMethod(self):
-        self.wasRun = True
+        self.wasRun = 1
 ```
 
 ## 전체 코드
@@ -88,11 +88,23 @@ class WasRun(TestCase):
 
     def __init__(self, name: str) -> None:
         super().__init__(name)
-        self.wasRun: bool | None = None
+        self.wasRun: int | None = None
 
     def testMethod(self) -> None:
-        """실행되면 wasRun을 True로 설정"""
-        self.wasRun = True
+        """실행되면 wasRun을 1로 설정"""
+        self.wasRun = 1
+```
+
+## 테스트 코드
+
+```python
+class TestCaseTest(TestCase):
+    def testRunning(self) -> None:
+        test = WasRun("testMethod")
+        assert not test.wasRun  # 아직 실행 안 됨
+
+        test.run()
+        assert test.wasRun
 ```
 
 ## 구현된 기능
@@ -105,7 +117,7 @@ class WasRun(TestCase):
 ## TODO 리스트
 
 - [x] 테스트 메서드 호출하기
-- [x] 먼저 setUp 호출하기
+- [ ] 먼저 setUp 호출하기
 - [ ] 나중에 tearDown 호출하기
 - [ ] 테스트 메서드가 실패해도 tearDown 호출하기
 - [ ] 여러 테스트 실행하기

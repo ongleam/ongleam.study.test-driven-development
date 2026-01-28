@@ -21,20 +21,28 @@ Kent Beck의 『Test-Driven Development: By Example』을 기반으로 TDD를 �
 ### Running Tests
 
 ```bash
-# Run all tests in part01
+# Run all tests
+python -m pytest
+
+# Run all tests in part01 (Money Example)
 python -m pytest part01/
+
+# Run all tests in part02 (xUnit Example)
+python -m pytest part02/
 
 # Run tests in a specific chapter
 python -m pytest part01/ch01/
+python -m pytest part02/ch18/
 
 # Run a specific test file
 python -m pytest part01/ch01/test_currency.py
+python -m pytest part02/ch18/test_xunit.py
 
 # Run a specific test function
 python -m pytest part01/ch01/test_currency.py::test_function_name
 
 # Run tests with verbose output
-python -m pytest -v part01/
+python -m pytest -v
 ```
 
 ## Architecture
@@ -42,17 +50,22 @@ python -m pytest -v part01/
 ### Directory Structure
 
 ```
-ongleam.study.tdd/
-├── part01/                   # Part 1: The Money Example
+ongleam.study.test-driven-development/
+├── part01/                   # Part 1: The Money Example (ch01-ch17)
 │   ├── ch01/                 # Chapter 01
 │   │   ├── README.md         # Chapter notes
 │   │   ├── currency.py       # Implementation code
 │   │   └── test_currency.py  # Test code
-│   ├── ch02/                 # Chapter 02
-│   ├── ...
-│   ├── ch17/                 # Chapter 17
+│   ├── ch02/ ~ ch17/         # Chapters 02-17
 │   ├── currency.py           # Shared currency module
 │   └── tests/                # Integration tests
+├── part02/                   # Part 2: The xUnit Example (ch18-ch24)
+│   ├── ch18/                 # Chapter 18: First Steps to xUnit
+│   │   ├── README.md         # Chapter notes
+│   │   ├── xunit.py          # xUnit implementation
+│   │   └── test_xunit.py     # Test code
+│   ├── ch19/                 # Chapter 19: Set the Table (setUp)
+│   └── ...                   # Upcoming chapters
 ```
 
 ### Test Organization
@@ -67,3 +80,21 @@ ongleam.study.tdd/
 - pytest를 테스트 프레임워크로 사용
 - 각 챕터는 독립적인 연습 단위
 - 한글 주석 사용 (Korean comments for internal documentation)
+
+## References
+
+### 원서
+
+- Kent Beck, _Test-Driven Development: By Example_, Addison-Wesley, 2003
+
+### 참고 구현 저장소
+
+- [jdodds/py-tdd-by-example](https://github.com/jdodds/py-tdd-by-example) - Python으로 책의 예제를 따라가는 저장소 (챕터별 태그 제공)
+- [brunogabriel/xUnit-tdd](https://github.com/brunogabriel/xUnit-tdd) - xUnit 구현 코드 (완성된 버전)
+- [bioerrorlog/kent-beck-tdd-python](https://github.com/bioerrorlog/kent-beck-tdd-python) - Kent Beck TDD 책 Python 구현
+- [vnqthai/tdd-kentbeck](https://github.com/vnqthai/tdd-kentbeck) - TDD by Example 소스 코드
+
+### 학습 자료
+
+- [Notes on TDD by Example](https://stanislaw.github.io/2016-01-25-notes-on-test-driven-development-by-example-by-kent-beck.html) - 책 요약 노트
+- [TDD notes from Kent Beck book (Gist)](https://gist.github.com/kkisiele/ab1e1bc1b6312cdf20ad7839ae31f5b3) - TDD 핵심 개념 정리

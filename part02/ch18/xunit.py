@@ -31,8 +31,8 @@ class WasRun(TestCase):
 
     def __init__(self, name: str) -> None:
         super().__init__(name)
-        self.wasRun: bool | None = None
+        self.wasRun: int | None = None
 
     def testMethod(self) -> None:
-        """실행되면 wasRun을 True로 설정"""
-        self.wasRun = True
+        """실행되면 wasRun을 1로 설정"""
+        self.wasRun = 1
